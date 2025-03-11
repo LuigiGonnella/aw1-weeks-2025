@@ -10,6 +10,7 @@
   "description": "",
   "dependencies": {
     "dayjs": "^1.11.13",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "week03": "file:"
   }
 }
