@@ -5,22 +5,59 @@ The `qa-server` is the server-side app companion for HeapOverrun. It presents so
 ## APIs
 Hereafter, we report the designed HTTP APIs, also implemented in the project.
 
-### __Title__
+### __List all questions__
 
-URL: `/`
+URL: `/questions`
 
-HTTP Method: Pick one.
+HTTP Method: GET
 
-Description: What I do.
+Description: Return all questions.
 
 Request body:
 ```
-A short example, if any
 ```
 
-Response: How I reply.
+Response: `200 OK` (success) or `500 Internal Server Error` (generic error).
+Return an array with all the questions
 
-Response body:
+Response body: //it returns the collection of object
 ```
-A short example, if any
+[
+    {
+    "Id" : 1;
+    "text" : "Is JavaScript better than Python?"
+    "email" : "luigi.derussis@gmail.com"
+    "userId" : 1
+    "date" : "2025-02-07"
+    },
+...
+]
+```
+
+### __Get a sinle question__
+
+URL: `/questions/<id>`
+
+HTTP Method: GET
+
+Description: Return the question represented by `<id>`.
+
+Request body:
+```
+```
+
+Response: `200 OK` (success) or `404 not found` (wtong id) or `500 Internal Server Error` (generic error).
+Return a single question
+
+Response body: 
+```
+
+{
+"Id" : 1;
+"text" : "Is JavaScript better than Python?"
+"email" : "luigi.derussis@gmail.com"
+"userId" : 1
+"date" : "2025-02-07"
+}
+
 ```
