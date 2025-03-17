@@ -10,12 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.11.13",
-<<<<<<< HEAD
-    "qa-server": "file:",
-=======
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "morgan": "^1.10.0",
->>>>>>> 05a0185252d1448a65efbb21af57517d409c2b38
     "sqlite3": "^5.1.7"
   }
 }
