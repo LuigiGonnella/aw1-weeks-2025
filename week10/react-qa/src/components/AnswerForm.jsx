@@ -1,13 +1,45 @@
 import { useActionState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Row, Col } from "react-bootstrap";
 import dayjs from "dayjs";
+import { useNavigate, useParams, useLocation, Link } from "react-router";
 
-function AnswerForm(props) {
+export function EditAnswerForm(props) {
+  // 1. metodo con i useParams
+  const params = useParams();
+  const aId = params.answerId;
+
+  // trovo la risposta da modificare
+  const answer = props.answers.filter(ans => ans.id == aId)[0];
+
+  /*
+  // 2. metodo con useLocation
+  const location = useLocation();
+  const answer = location.state;
+  // back to dayjs
+  answer.date = dayjs(answer.date);
+  */
+ 
+  if(answer)
+    return <AnswerForm answer={answer} editAnswer={props.editAnswer} />
+  else {
+    return (
+      <Row>
+        <Col as="p" className="lead">Impossible to edit an non-existent answer!</Col>
+      </Row> 
+    );
+  }
+  
+}
+
+export function AnswerForm(props) {
+
+  const navigate = useNavigate();
+  const { questionId } = useParams();
   
   const initialState = {
     text: props.answer?.text,
     email: props.answer?.email,
-    date: props.answer?.date ?? dayjs()
+    date: props.answer?.date.format("YYYY-MM-DD") ?? dayjs().format("YYYY-MM-DD")
   };
   
   const handleSubmit = async (prevState, formData) => {
@@ -26,14 +58,16 @@ function AnswerForm(props) {
     else
       props.editAnswer({id: props.answer.id, ...answer});
 
-    // ritorno lo stato del form
-    return initialState;
+    navigate(`/questions/${questionId}`);
   }
 
   const [state, formAction] = useActionState(handleSubmit, initialState);
 
   return(
     <>
+      <Row>
+        <Col as="p" className="mt-3"><strong>Your Answer:</strong></Col>
+      </Row>
       { state.error && <Alert variant="secondary">{state.error}</Alert> }
       <Form action={formAction}>
         <Form.Group className="mb-3">
@@ -46,15 +80,13 @@ function AnswerForm(props) {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Date</Form.Label>
-          <Form.Control name="date" type="date" required={true} min={dayjs().format("YYYY-MM-DD")} defaultValue={state.date.format("YYYY-MM-DD")}></Form.Control>
+          <Form.Control name="date" type="date" required={true} min={dayjs().format("YYYY-MM-DD")} defaultValue={state.date}></Form.Control>
         </Form.Group>
         { props.addAnswer && <Button variant="primary" type="submit">Add</Button> }
         { props.editAnswer && <Button variant="success" type="submit">Update</Button> }
         {" "}
-        <Button variant="danger" onClick={props.cancel}>Cancel</Button>
+        <Link className="btn btn-danger" to={`/questions/${questionId}`}>Cancel</Link>
       </Form>
     </>
   );
 }
-
-export default AnswerForm;
